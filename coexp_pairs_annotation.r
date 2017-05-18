@@ -3,7 +3,6 @@
 args=commandArgs(TRUE)
 library("getopt")
 
-
 spec <- matrix(c(
   'input', 'i', 1, "character", "output from correlation.r (required)",
   'output','o', 2, "character", "output file (optional)"
