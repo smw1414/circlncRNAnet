@@ -4,6 +4,7 @@
 args=commandArgs(TRUE)
 library("getopt")
 
+
 spec <- matrix(c(
   'input', 'i', 1, "character", "output from Deseq2 (required)",
   'output','o', 2, "character", "output file (optional)"

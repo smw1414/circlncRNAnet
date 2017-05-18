@@ -3,6 +3,7 @@
 args=commandArgs(TRUE)
 library("getopt")
 
+
 spec <- matrix(c(
   'query'     , 'q', 1, "character","X = query gene",
   'coexp'     , 'c', 1, "character","Y = co expression gene"

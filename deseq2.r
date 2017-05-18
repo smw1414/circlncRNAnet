@@ -2,7 +2,6 @@
 args=commandArgs(TRUE)
 library("getopt")
 
-
 spec <- matrix(c(
   'rawreads', 'r', 1, "character", "gene raw reads table (required) 
   \ngene\tSamples1  Sample2\nGene1\t23\t234\nGene2\t565\t23\n",

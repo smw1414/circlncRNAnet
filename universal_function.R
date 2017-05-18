@@ -4,6 +4,7 @@ run_time_message<-function(msg){
   message(paste0(Sys.time()," : ",msg))
 }
 
+
 run_time_prom<-function(){
  h <- taskCallbackManager()
  h$add(function(expr, value, ok, visible) { 

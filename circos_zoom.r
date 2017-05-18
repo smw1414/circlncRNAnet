@@ -2,7 +2,6 @@
 ######!/share/apps/R/bin/Rscript
 args=commandArgs(TRUE)
 
-
 library(getopt)
 
 # 1=required argument;2=optional argument

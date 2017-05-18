@@ -3,6 +3,7 @@ args=commandArgs(TRUE)
 
 library(getopt)
 
+
 # 1=required argument;2=optional argument
 spec <- matrix(c(
   'normreads', 'n', 2, "character", "normalized reads table (required)",
