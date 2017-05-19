@@ -2,7 +2,7 @@
 
 1. Download all scritps
 
-2. Download the db files from(about 2GB)  
+2. Download the db files from (about 2GB)  
 http://app.cgu.edu.tw/circlnc/db/db.zip  
 
 3. Make all scripts executable   
