@@ -21,7 +21,7 @@ and create a ouput folder
 6. Perfrom gene enrichment, RBP and miRNA sponge analysis  
   * lncRNA  
       + RBP ```./triple_network_lncRNA_RBP_2step.R```  
-      + miRNA sponge ```./triple_network_lncRNA_sponge_2step.R`` `  
+      + miRNA sponge ```./triple_network_lncRNA_sponge_2step.R```  
   * circRNA  
       + RBP ```./triple_network_circRNA_RBP_2step.R```  
       + miRNA sponge ```./triple_network_circRNA_sponge_2step.R```  
