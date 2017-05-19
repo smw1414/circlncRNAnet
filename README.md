@@ -13,7 +13,7 @@ and create a ouput folder
 4. Prepare your own gene matrix file or download demo files from http://app.cgu.edu.tw/circlnc/  
 
 4. Perform differential expresion analysis  
-``` ./deseq2.r ```  
+``` ./deseq2.r  ```  
 
 5. Select the gene you intrerest then perform co-expression analysis  
 ```./correlation.r ```
