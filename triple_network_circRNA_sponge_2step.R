@@ -27,10 +27,10 @@ source("universal_function.R")
 
 gencode_files<-list(gencodev19=c("v19_gene_coordinate.rds",
                                  "all_v19_sponge.feather",
-                                 "cricrna_hg19_sponge.feather"),
+                                 "circrna_hg19_sponge.feather"),
                     gencodev25=c("v25_gene_coordinate.rds",
                                  "all_v25_sponge.feather",
-                                 "cricrna_hg38_sponge.feather")
+                                 "circrna_hg38_sponge.feather")
 )
 
 library(data.table)
