@@ -1,4 +1,4 @@
-# Use of circlncnet in command line mode
+# Use of circlncRNAnet in command line mode
 
 1. Download all scritps
 
