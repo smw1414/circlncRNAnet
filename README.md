@@ -2,7 +2,7 @@
 
 1. Download all scritps
 
-2. Download the db files from (about 2GB)  
+2. Download db files from (about 2GB)  
 http://app.cgu.edu.tw/circlnc/db/db.zip  
 
 3. Make all scripts executable   
@@ -15,7 +15,7 @@ and create a ouput folder
 4. Perform differential expresion analysis  
 ``` ./deseq2.r  ```  
 
-5. Select the gene you intrerest then perform co-expression analysis  
+5. Select the gene you intrerested, then perform co-expression analysis  
 ```./correlation.r ```
 
 6. Perfrom gene enrichment, RBP and miRNA sponge analysis  
