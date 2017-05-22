@@ -135,7 +135,7 @@ circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
   col =  ifelse(value[[1]] > 0.75, "darkred", 
                 ifelse(value[[1]] > 0.5,"red",
                        ifelse(value[[1]] <  -0.75,"darkblue",
-                              ifelse(value[[1]] <  -0.55,"blue","lightgrey"))))
+                              ifelse(value[[1]] <  -0.5,"blue","lightgrey"))))
   cex = ifelse(value[[1]] > 0.75, 0.8, 
                ifelse(value[[1]] > 0.5, 0.2,
                       ifelse(value[[1]] <  -0.75,0.8,
