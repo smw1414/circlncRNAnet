@@ -16,13 +16,7 @@ if ( is.null(opt$query) | is.null(opt$coexp)) {
 Example (linux): Rscript scatterplot.r -q chr19_21216990_21216261_fwd -c ENSG00000106603 \n"));
   q();
 }
-#opt$query <-"ELFN1-AS1"
-#opt$coexp <- "MYC"
-#xx<-opt$query[1]
-#yy<-opt$coexp[1]
-#opt$query <-"ENSG00000232956"
-#opt$coexp <- "ENSG00000106603"
-#opt$query <-"chr19_21216990_21216261_fwd"
+
 
 circ_gene_merged<-readRDS("output/circ_gene_merged.rds") #reads table
 #linc_coexp_pairs<-readRDS("output/linc_coexp_pairs.rds")
@@ -76,5 +70,5 @@ p<-ggplot((circ_gene_merged), aes(x= log2(circ_gene_merged[,xx]), y= log2(circ_g
             annotate("text", label = paste0(label_r2_lm_scatter,"\n",label_pvalue_lm_scatter) ,parse=F ,
                      x = Inf, y = -Inf, color = "black",size = 3.5,hjust = 1.1, vjust = -1 )
 
-#saveRDS(p,paste0("output/",xx,"_",yy,"_scatterplot.rds"))
+
 

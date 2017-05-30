@@ -356,27 +356,4 @@ colnames(link_df)[grep("^id$",colnames(link_df))]<-"to"
 write.table(link_df,paste0("output/pathway_network_link_",enrich_type,"_",query_gene,"_",cutoff_reg,"_",cutoff_pos,cutoff_neg,".txt"),sep = "\t",quote=F,row.names = F)
 write.table(node_df,paste0("output/pathway_network_node_",enrich_type,"_",query_gene,"_",cutoff_reg,"_",cutoff_pos,cutoff_neg,".txt"),sep = "\t",quote=F,row.names = F)
 
-visNetwork(node_df, link_df, height = "1000px", width = "100%") %>%
-   visOptions(selectedBy = "group", 
-              highlightNearest = TRUE, 
-              nodesIdSelection = TRUE) %>%
-  visPhysics(maxVelocity=1,stabilization = T) %>%
-  visLayout(randomSeed = 123) %>%
- visEdges(smooth =  list(enabled = TRUE, type = 'continuous',roundness=0),physics=F)
-
-asdasdfas<-function(){
-
-  
-  #enrich_type<-"hm"
-  #pathway_network_node_hm_chr17_69128619_69134742_rev_ex_0.5-0.5
-  
-  query_gene<-"CCAT1"
- # query_gene<-"chr10_115129535_115120185_fwd"
-  cutoff_pos<-0.15
-  cutoff_neg<--0.15
-  cutoff_reg<-"ex"
-  
-  enrich_type<-"kegg"
-}
-
 

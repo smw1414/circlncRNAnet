@@ -221,39 +221,6 @@ trinetwork_tabout(sponge_network, "sponge", query_symbol_input)
 #group name table
 groupnames<-data.frame(query="query",coexp="co-expressed_gene",associated_compoment="miRNA",stringsAsFactors=F)
 
-###  plot network 
-#creating nodes
-# testnode<-data.frame(label=unique(as.character(sponge_network[[1]])),stringsAsFactors=F) # 1=query_symbol ,
-# # assign gene belongs to query,co-express gene, miRNA 
-# testnode$group<-ifelse( testnode$label %in% query_symbol_input,groupnames$query[1],groupnames$coexp[1])
-# testnode<-rbind(data.frame(label=unique(as.character(sponge_network[[3]])) 
-#                            ,group=groupnames$associated_compoment[1],stringsAsFactors=F),testnode)
-# 
-# testnode<-cbind(data.frame(id=rep(1:nrow(testnode)),stringsAsFactors=F),testnode)
-# testnode$value<-""
-# #assign node size value
-# testnode[testnode$group %in% groupnames$query[1],]$value<-5
-# try(testnode[testnode$group %in% groupnames$coexp[1],]$value<-2)
-# testnode[testnode$group %in% groupnames$associated_compoment[1],]$value<-3
-# testnode$title<-paste0(testnode$label) #add tooltip
-# # id=id , lable= gene_name , value=size of node , title=tooltip
-# 
-# # creating links
-# testlink<-sponge_network[,c(groupnames$associated_compoment[1],"query_symbol","support_sources_count"),with=F]
-# 
-# # merge miRNA_id to link table
-# testlink<-merge(testlink,testnode[testnode$group %in% groupnames$associated_compoment[1],1:3],by.x=associated_compoment[1] , by.y="label")
-# colnames(testlink)[grep("^id$",colnames(testlink))]<-"from"  # from_id == miRNA
-# 
-# # merge co_express_gene_id to link table
-# testlink<-merge(testlink,testnode[!testnode$group %in% groupnames$associated_compoment[1],1:3],by.x="query_symbol", by.y="label" )
-# colnames(testlink)[grep("^id$",colnames(testlink))]<-"to"  # to_id == circRNA or co-expressed gene
-# #testlink$label<-paste0(testlink$group.x,"_",testlink$group.y)
-# testlink$title<-paste0(testlink$miRNA," to ",testlink$query_symbol)
-# testlink<- testlink[,c("from","to","support_sources_count","title")] #,"label"
-# colnames(testlink)[grep("support_sources_count",colnames(testlink))]<-"color"
-# testlink$color<-ifelse(testlink$color==3,"red","lightblue")
-# testlink$color<-NULL
 
 # creating node and link 
 creating_nodelink_sponge()
@@ -270,38 +237,6 @@ testlink_level1<-testlink[testlink$to %in% testnode_level1[testnode_level1$label
 
 trinetwork_nodelinkout_level1("sponge",query_symbol_input )
 
-
-
-asdas<-function(){
-  
-  visNetwork(testnode_level1, testlink_level1, height = "1000px", width = "100%") %>%
-    visOptions(selectedBy = "group", 
-               highlightNearest = TRUE, 
-               nodesIdSelection = TRUE) %>%
-    visPhysics(maxVelocity=50,stabilization = T) %>%
-    visLayout(randomSeed = 123) %>%
-    visEdges(smooth =  list(enabled = TRUE, type = 'continuous',roundness=0),physics=F)# %>%
-  #visIgraphLayout(randomSeed=123)
-  
-  visNetwork(testnode_level2, testlink_level2, height = "1000px", width = "150%") %>%
-    visOptions(selectedBy = "group", 
-               highlightNearest = TRUE, 
-               nodesIdSelection = TRUE) %>%
-    visPhysics(maxVelocity=50,stabilization = T) %>%
-    visLayout(randomSeed = 123) %>%
-    visEdges(smooth =  list(enabled = TRUE, type = 'continuous',roundness=0),physics=F)# %>%
-  
-  #query_symbol_input<-"chr11_35204640_35201082_fwd"
-  acq<-"hsa-mir-1260a"
-  query_symbol_input<-"chr20_17955365_17957037_rev"
-  query_symbol_input<-"chr10_97437191_97438703_rev"
- 
-  #acq<-"hsa-mir-574-5p"
-  cutoff_pos<-0.5
-  cutoff_neg<--0.5
-  cutoff_reg<-"ex"
-  DSD<-2
-}
 
 
 

@@ -39,19 +39,6 @@ cutoff_pos<-opt$cutoff_pos[1]
 cutoff_neg<-opt$cutoff_neg[1]
 cutoff_reg<-opt$cutoff_reg[1]
 
-asas<-function(){
-  query_gene<<-"chr10_97437191_97438703_rev"
-  cutoff_pos<<-0.5
-  cutoff_neg<<-0.5
-  cutoff_reg<<-"ex"
-}
-
-# asas()
-# if ("gencodev19" %in% df_opt$V1 ){
-#   gene_coordinate<-readRDS("v19_gene_coordinate.rds")
-# } else if ("gencodev25" %in% df_opt$V1 ) {
-#   gene_coordinate<-readRDS("v25_gene_coordinate.rds")
-# } 
 
 ################################# filtering  #####################################
 rna_idx<-ifelse( length(which("lncRNA" %in% colnames(linc_coexp_pairs))) == 1,which("lncRNA" %in% colnames(linc_coexp_pairs)),
@@ -109,21 +96,7 @@ print(nrow(linc_coexp_pairs_filtered
   heatmapann$V1<-NULL
   colnames(heatmapann)<-c("type")
   sortedtab$samples<-NULL
-  # ###########################
-  # # transform to max and min
-  # sortedtab2<-log2(sortedtab)
-  #data<-sortedtab2
-  #  maxminnorm<-data.frame()
-  #  for (row in 1:nrow(data)){
-  #    for (col in 1:ncol(data)){
-  #    maxminnorm[row,col]<-(10*(data[row,col]-min(na.omit(data[row,]))))/(max(na.omit(data[row,]))-min(na.omit(data[row,])))+(-5)
-  #       #maxminnorm[row,col]<- (data[row,col]-median(as.numeric(data[row,]),na.rm=T))/mad(as.numeric(data[row,]),na.rm=T)
-  #    }
-  #  }
-  #  row.names(maxminnorm)<-rownames(sortedtab)
-  #  colnames(maxminnorm)<-colnames(sortedtab)
-  #  sortedtab2<-maxminnorm
-  ####################
+
   # annotation processing
   #roder factorlevel
   

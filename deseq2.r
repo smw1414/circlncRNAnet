@@ -37,31 +37,6 @@ library("factoextra")
 #library("reshape2")
 
 #read table and factor
-testlnc<-function(){
-  opt$core <-10
-  opt$annotation<-"gencodev25"
-  opt$mode<-"lnc"
-  opt$rawreads<-"TCGA_COADREAD_GENCODEV25_raw_read_count.txt"
-  opt$factorlist<-"TCGA_COADREAD_GENCODEV25_condition.txt"
-}
-testcircc<-function(){
-  opt$core <-10
-  opt$annotation<-"gencodev25"
-  opt$mode<-"circ"
-  opt$rawreads<-"encode_example_Gene_raw_read_count_casted.txt"
-  opt$factorlist<-"encode_example_circRNA_condition.txt"
-  opt$circmatrix<-"encode_example_circRNA_raw_read_count_casted.txt"
-}
-
-testcircc<-function(){
-  opt$core <-10
-  opt$annotation<-"gencodev25"
-  opt$mode<-"circ"
-  opt$rawreads<-"OSCC/oscc_Rseq_hg38_raw_read_counts.txt"
-  opt$factorlist<-"OSCC/oscc_allsample_condition.txt"
-  opt$circmatrix<-"OSCC/oscc_circRNA_hg38_raw_read_counts_casted_symbol.txt"
-}
-
 
 ann<-opt$annotation[1]
 mode<-opt$mode[1]
@@ -85,22 +60,6 @@ if (!(mode %like% "TCGA-")){
   }
 }
 
-
-# symbol_id<-get_symbol_id("gencode.v25.annotation.gtf")
-# lncRNA_symbol_id<-get_symbol_id("gencode.v25.long_noncoding_RNAs.gtf")
-# coding_symbol_id<-get_symbol_id_coding("gencode.v25.annotation.gtf")
-# transctipt_symbol_id<-get_transcript_symbol_id("gencode.v25.annotation.gtf")
-# gene_transctipt_id_mapper<-get_gene_transcript_symbol_id("gencode.v25.annotation.gtf")
-# gencodev25_sym_id<-list(symbol_id=symbol_id,lncRNA_symbol_id=lncRNA_symbol_id,coding_symbol_id=coding_symbol_id,transctipt_symbol_id=transctipt_symbol_id,gene_transctipt_id_mapper=gene_transctipt_id_mapper)
-# saveRDS(gencodev25_sym_id,"gencodev25_sym_id.rds")
-# 
-# symbol_id<-get_symbol_id("gencode.v19.annotation.gtf")
-# lncRNA_symbol_id<-get_symbol_id("gencode.v19.long_noncoding_RNAs.gtf")
-# coding_symbol_id<-get_symbol_id_coding("gencode.v19.annotation.gtf")
-# transctipt_symbol_id<-get_transcript_symbol_id("gencode.v19.annotation.gtf")
-# gene_transctipt_id_mapper<-get_gene_transcript_symbol_id("gencode.v19.annotation.gtf")
-# gencodev19_sym_id<-list(symbol_id=symbol_id,lncRNA_symbol_id=lncRNA_symbol_id,coding_symbol_id=coding_symbol_id,transctipt_symbol_id=transctipt_symbol_id,gene_transctipt_id_mapper=gene_transctipt_id_mapper)
-# saveRDS(gencodev19_sym_id,"gencodev19_sym_id.rds")
 
 get_symbol_id<-function(gtf){
   v25lncRNAgtf<-data.table::fread(gtf,stringsAsFactors = F)

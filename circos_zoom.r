@@ -21,19 +21,6 @@ if (is.null(opt2$query) || is.null(opt2$folder)) {
 
 
 
-##### for test ######
-#  opt2$query<-"chr2_191537878_191523883_fwd"
-#  opt2$query<-"chrX_47755339_47705503_fwd"
-#  opt2$query<-"CTD-2396E7.11"
-# opt2$query<-"LINC00483"
-# opt2$query<-"MIR4435-2HG"
-# opt2$query<-"RP11-395B7.2"
-# opt2$query<-"SNHG15"
-# opt2$query<-"XXbac-B461K10.4"
-# opt2$query<-"XXbac-B476C20.9"
-# opt2$query<-"XXbac-B476C20.9"
-# opt2$query<-"XXbac-B476C20.9"
-#  opt2$folder<-"output"
 # define default value
 if ( is.null(opt2$top ) ) { opt2$top = 25 }
 ncoexp<-opt2$top

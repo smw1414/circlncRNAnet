@@ -29,105 +29,15 @@ DEMO DATA CMD TCGA ./correlation.r -n output/norm_readstable.txt -f count_matrix
   q();
 }
 
-#if (is.null(opt$circRNA) & opt$mode == "circ") {
-##  cat(paste("please attach a circRNA table\n"))
-#  q();
-#}
 run_time_message<-function(msg){
   message(paste0(Sys.time()," : ",msg))
 }
-# #idlnc
-# idlnc<-function(){
-#   opt$query = "ENSG00000203499,ENSG00000236081,ENSG00000255874,ENSG00000232956,ENSG00000204876"
-#   opt$factorlist = "factor_ID.txt"
-#   opt$normreads= "CRC_Rseq_hg38_id_deseq.txt"
-#   opt$annotation = "gencodev25"
-#   opt$symbolid = "id"
-#   opt$mode = "lnc"
-# }
-# symbollnc<-function(){
-#  # opt$query = "MAGEA6,KLK6,MAGEA3,SLC26A9,NOTUM,TCN1,MMP7,COL10A1,PAH,ONECUT3,CST1,KRT23,OTOP2,WNT2,IGF2BP1,SIM2,HABP2,INHBA,ESM1,FOXQ1"
-#   opt$query = "FAM83H-AS1,ELFN1-AS1,LINC00346,SNHG15,AC021218.2,CCAT1"
-#   opt$factorlist = "factor_CRC_Rseq_partekflow_norm.txt"
-#   opt$normreads= "CRC_Rseq_partekflow_norm.txt"
-#   opt$annotation = "gencodev25"
-#   opt$symbolid = "symbol"
-#   opt$mode = "lnc"
-# }
-# 
-# symboldemo<-function(){
-#   # opt$query = "MAGEA6,KLK6,MAGEA3,SLC26A9,NOTUM,TCN1,MMP7,COL10A1,PAH,ONECUT3,CST1,KRT23,OTOP2,WNT2,IGF2BP1,SIM2,HABP2,INHBA,ESM1,FOXQ1"
-#   opt$query = "FAM83H-AS1,ELFN1-AS1,LINC00346,SNHG15,AC021218.2,DDX11-AS1"
-#   opt$factorlist = "NO"
-#   opt$normreads= "NO"
-#   opt$annotation = "gencodev25"
-#   opt$symbolid = "symbol"
-#   opt$mode = "lnc"
-#   opt$demo="COADREAD"
-# }
-# 
-# symcirc<-function(){
-#  
-#   opt$query = "chr11_35204640_35201082_fwd,chr10_97437191_97438703_rev,chr9_128515639_128508876_fwd,chr12_68836749_68828771_fwd"
-#   opt$factorlist = "encode_example_circRNA_condition.txt"
-#   opt$normreads= "norm_readstable.txt"
-#   opt$annotation = "gencodev25"
-#   opt$symbolid = "symbol"
-#   opt$circRNA = "norm_readstable_circRNA.txt"
-#   opt$mode = "circ"
-# }
-# 
-# 
-# symcirc<-function(){
-#   opt$query = "chrX_47755339_47705503_fwd,chr2_191537878_191523883_fwd"
-#   opt$factorlist = "factor_OSCC_Rseq_circrna.txt"
-#   opt$normreads= "OSCC_Rseq.txt"
-#   opt$annotation = "gencodev19"
-#   opt$symbolid = "symbol"
-#   opt$circRNA = "OSCC_circRNA2.txt"
-#   opt$mode = "circ"
-# }
-# 
-# 
- symcirc<-function(){
-   #OSCC all
-  opt$query = "chr11_102871594_102871952_rev,chr5_38523419_38530666_rev,chr20_17955365_17957037_rev,chr3_58081776_58077046_fwd,chr10_115129535_115120185_fwd,chr9_16435555_16437524_rev,chr17_69128619_69134742_rev"
-  opt$factorlist = "OSCC/oscc_allsample_condition.txt"
-  opt$normreads= "norm_readstable.txt"
-  opt$annotation = "gencodev25"
-  opt$symbolid = "symbol"
-  opt$circRNA = "norm_readstable_circRNA.txt"
-  opt$mode = "circ"
-}
-symbollnc<-function(){
- # opt$query = "MAGEA6,KLK6,MAGEA3,SLC26A9,NOTUM,TCN1,MMP7,COL10A1,PAH,ONECUT3,CST1,KRT23,OTOP2,WNT2,IGF2BP1,SIM2,HABP2,INHBA,ESM1,FOXQ1"
-  opt$query = "C5orf66,CDR1-AS,DSG1-AS1,HOXA10-AS,RP11-1223D19.3,RP11-132A1.4,RP11-146D12.2,RP11-161M6.2,RP11-681B3.4,RP11-774O3.3"
-  opt$factorlist = "OSCC/oscc_allsample_condition.txt"
-  opt$normreads= "norm_readstable.txt"
-  opt$annotation = "gencodev25"
-  opt$symbolid = "symbol"
-  opt$mode = "lnc"
-}
-
-symbollnc<-function(){
-  # opt$query = "MAGEA6,KLK6,MAGEA3,SLC26A9,NOTUM,TCN1,MMP7,COL10A1,PAH,ONECUT3,CST1,KRT23,OTOP2,WNT2,IGF2BP1,SIM2,HABP2,INHBA,ESM1,FOXQ1"
-  opt$query = "C5orf66,CDR1-AS,DSG1-AS1,HOXA10-AS,RP11-1223D19.3,RP11-132A1.4,RP11-146D12.2,RP11-161M6.2,RP11-681B3.4,RP11-774O3.3"
-  opt$factorlist = "output/TCGA_factor_list.txt"
-  opt$normreads= "output/norm_readstable.txt"
-  opt$annotation = "gencodev25"
-  opt$symbolid = "symbol"
-  opt$mode = "lnc"
-}
 
 
-#library("GenomicFeatures")
-#library("biomaRt")
 library("data.table")
 library("ggplot2")
 library("feather")
-#library("WGCNA")
-#system("export ALLOW_WGCNA_THREADS=6")
-#allowWGCNAThreads()
+
 #### reads table ########
 run_time_message("reads table")
 if(length(opt$demo)>0) {
@@ -161,10 +71,6 @@ if(length(opt$demo)>0) {
   
 }
 
-
-#
-#system("rm -rf output ")
-#system("mkdir -p output ")
 
 ###### loading db files #####
 run_time_message("loading db files")
