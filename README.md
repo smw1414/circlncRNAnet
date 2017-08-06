@@ -7,7 +7,7 @@ http://app.cgu.edu.tw/circlnc/db/db.zip
 
 3. Make all scripts executable   
 ``` chmod +x *.[Rr] ```  
-and create a ouput folder  
+and create an output folder  
 ``` mkdir output ```  
 
 4. Prepare your own gene matrix file or download demo files from http://app.cgu.edu.tw/circlnc/  
