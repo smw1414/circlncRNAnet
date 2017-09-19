@@ -11,7 +11,7 @@ Then, follow the instructions below for installation and data analyses:
   
 <br> 
   
-###**1. Installation of prerequisites**
+### **1. Installation of prerequisites**
 
 ```
 # download circlncRNAnet
@@ -33,7 +33,7 @@ q("no")
   
 <br> 
   
-###**2. Download the db files **
+### **2. Download the db files **
 
 ```
 wget http://app.cgu.edu.tw/circlnc/db/db.zip  # 2GB
@@ -44,13 +44,13 @@ unzip tcga.zip
   
 <br> 
   
-###**3. Perform the differential expression analysis**
+### **3. Perform the differential expression analysis**
   
-####**Preperation of gene matrix file**
+#### **Preperation of gene matrix file**
 * Please refer http://http://app.cgu.edu.tw/circlnc/circlnc_tutorial/_book/data-input.html#preparation-of-input-files  
 <br>  
 
-####**Perform the differential expression analysis**
+#### **Perform the differential expression analysis**
 
 1. Open **RStudio** and create a new **R project** under the folder of **circlncRNAnet**.  
 2. Run the following commands for either lncRNA or circRNA differential expression analyses.  
@@ -72,7 +72,7 @@ system("./circrna_local_run_deg.sh demo_file/encode_example_Gene_raw_read_count_
   
 <br> 
   
-###**4. Visualization of differential expresion results/table** 
+### **4. Visualization of differential expresion results/table** 
 
 1. Open the file browser in the right bottom panel.    
 
@@ -85,7 +85,7 @@ system("./circrna_local_run_deg.sh demo_file/encode_example_Gene_raw_read_count_
   
 <br> 
   
-###**5. Perform co-expression analysis**  
+### **5. Perform co-expression analysis**  
 
 ```
 # lncRNA
@@ -106,7 +106,7 @@ system("./circrna_local_run_cor.sh chr11_35204640_35201082_fwd,chr10_97437191_97
   
 <br> 
   
-###**6. Visualization of co-expression analysis results**  
+### **6. Visualization of co-expression analysis results**  
 
 1. Open the file browser in the right bottom panel.    
 
