@@ -1,0 +1,8 @@
+esophagus1	eso
+esophagus2	eso
+esophagus3	eso
+esophagus4	eso
+sigmoid_colon1	col
+sigmoid_colon2	col
+sigmoid_colon3	col
+sigmoid_colon4	col
