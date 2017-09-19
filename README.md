@@ -1,17 +1,16 @@
 # **Use of circlncRNAnet in local mode**
-***
-  
+
 This instruction will guide the users to use the circlncRNAnet in local mode. To set up a local run mode, the following three items are required:
 
 1. Linux environment.   
 2. R, v3.3.2 is recommended.  
 3. Rstudio.  
-
+ 
 Then, follow the instructions below for installation and data analyses:
   
 <br> 
   
-### **1. Installation of prerequisites**
+### **1. Installation of prerequisites**  
 
 ```
 # download circlncRNAnet
@@ -33,7 +32,7 @@ q("no")
   
 <br> 
   
-### **2. Download the db files **
+### **2. Download the db files **  
 
 ```
 wget http://app.cgu.edu.tw/circlnc/db/db.zip  # 2GB
