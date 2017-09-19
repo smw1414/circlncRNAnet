@@ -32,7 +32,7 @@ q("no")
   
 <br> 
   
-### **2. Download the db files **  
+### **2. Download the db files**  
 
 ```
 wget http://app.cgu.edu.tw/circlnc/db/db.zip  # 2GB
