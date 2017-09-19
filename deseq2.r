@@ -41,8 +41,8 @@ library("factoextra")
 ann<-opt$annotation[1]
 mode<-opt$mode[1]
 
-TCGA_folder<-""
-TCGA_df<-data.frame(rds=system(paste0("ls ",TCGA_folder,"deseq_list*TCGA*rds"),intern = T))
+TCGA_folder<-"tcga"
+TCGA_df<-data.frame(rds=system(paste0("ls ",TCGA_folder,"/deseq_list*TCGA*rds"),intern = T))
 TCGA_df$cancer<-gsub(".*(TCGA.*)\\.rds","\\1",TCGA_df$rds)
 
 if (!(mode %like% "TCGA-")){
