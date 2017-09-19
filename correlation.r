@@ -75,7 +75,7 @@ if(length(opt$demo)>0) {
 ###### loading db files #####
 run_time_message("loading db files")
  if (opt$annotation[1]=="gencodev19"){
-  chrsize <- read.delim("hg19.chrom.sizes", header=FALSE)
+  # chrsize <- read.delim("hg19.chrom.sizes", header=FALSE)
   lnc_gene <-readRDS("v19_lncrna_gene.rds")
   codeinggenelist<-readRDS("v19_protein_coding.rds")
   lncpedia<-read.delim("lncipedia_4_hc_hg19_id.txt", header=FALSE)
@@ -84,7 +84,7 @@ run_time_message("loading db files")
   gene_coordinate<-readRDS("v19_gene_coordinate.rds")
 
 } else if (opt$annotation[1]=="gencodev25") {
-  chrsize <- read.delim("hg38.chrom.sizes", header=FALSE)
+  # chrsize <- read.delim("hg38.chrom.sizes", header=FALSE)
   lnc_gene <- readRDS("v25_lncrna_gene.rds")
   codeinggenelist<-readRDS("v25_protein_coding.rds")
   all_gene<-rbind(lnc_gene,codeinggenelist)
@@ -96,11 +96,11 @@ run_time_message("loading db files")
   
 } else { cat(paste(getopt(spec, usage=T)));q(); }
 
-rownames(chrsize)<-chrsize$V1
-chrsize$V1<-NULL
-chrsize<-t(chrsize)
-names(chrsize)<-colnames(chrsize)
-chrsize<-chrsize[1,]  
+# rownames(chrsize)<-chrsize$V1
+# chrsize$V1<-NULL
+# chrsize<-t(chrsize)
+# names(chrsize)<-colnames(chrsize)
+# chrsize<-chrsize[1,]  
 gene_coordinate<-unique(gene_coordinate[,c(1:8)]) # remove entrzid  #add 
 
 df_opt<-as.data.frame(do.call("rbind", opt),stringsAsFactors = F)
