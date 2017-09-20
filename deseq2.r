@@ -61,53 +61,6 @@ if (!(mode %like% "TCGA-")){
 }
 
 
-get_symbol_id<-function(gtf){
-  v25lncRNAgtf<-data.table::fread(gtf,stringsAsFactors = F)
-  lncRNA_symbol<-strsplit(unlist(unique(subset(v25lncRNAgtf,V3== "exon",select = V9))),";")
-  symbol<-gsub(" gene_name \\\"","",sapply(lncRNA_symbol,"[[",5))
-  id<-gsub("gene_id \\\"","",sapply(lncRNA_symbol,"[[",1))
-  symbol<-(gsub("\\\"","",symbol))
-  id<-(gsub("\\\"","",id))
-  symbol_id<-unique(data.frame(symbol=symbol,id=id))
-  return(symbol_id)
-}
-
-get_transcript_symbol_id<-function(gtf){
-  v25lncRNAgtf<-data.table::fread(gtf,stringsAsFactors = F)
-  lncRNA_symbol<-strsplit(unlist(unique(subset(v25lncRNAgtf,V3== "exon",select = V9))),";")
-  symbol<-gsub(" gene_name \\\"","",sapply(lncRNA_symbol,"[[",5))
-  id<-gsub(" transcript_id \\\"","",sapply(lncRNA_symbol,"[[",2))
-  symbol<-(gsub("\\\"","",symbol))
-  id<-(gsub("\\\"","",id))
-  symbol_id<-unique(data.frame(symbol=symbol,id=id))
-  return(symbol_id)
-}
-
-get_gene_transcript_symbol_id<-function(gtf){
-  v25lncRNAgtf<-data.table::fread(gtf,stringsAsFactors = F)
-  lncRNA_symbol<-strsplit(unlist(unique(subset(v25lncRNAgtf,V3== "exon",select = V9))),";")
-  gene_id<-gsub("gene_id \\\"","",sapply(lncRNA_symbol,"[[",1))
-  transcript_id<-gsub(" transcript_id \\\"","",sapply(lncRNA_symbol,"[[",2))
-  gene_id<-as.character(gsub("\\\"","",gene_id))
-  transcript_id<-as.character(gsub("\\\"","",transcript_id))
-  symbol_id<-unique(data.frame(gene_id=gene_id,transcript_id=transcript_id))
-  return(symbol_id)
-}
-
-get_symbol_id_coding<-function(gtf){
-  v25lncRNAgtf<-data.table::fread(gtf,stringsAsFactors = F)
-  lncRNA_symbol<-strsplit(unlist(unique(subset(v25lncRNAgtf,V3== "exon",select = V9))),";")
-  #lncRNA_symbol<-lncRNA_symbol[grep(" gene_type \"protein_coding\"",lncRNA_symbol)]
-  symbol<-gsub(" gene_name \\\"","",sapply(lncRNA_symbol,"[[",5))
-  id<-gsub("gene_id \\\"","",sapply(lncRNA_symbol,"[[",1))
-  type<-gsub("gene_id \\\"","",sapply(lncRNA_symbol,"[[",3))
-  symbol<-(gsub("\\\"","",symbol))
-  id<-(gsub("\\\"","",id))
-  symbol_id<-unique(data.frame(symbol=symbol,id=id,type=type))
-  symbol_id<-symbol_id[symbol_id$type %in% " gene_type \"protein_coding\"",]
-  return(symbol_id[,1:2])
-}
-
 pca<-function(input,condition,output){
   
   gene_profile=data.table(input)
