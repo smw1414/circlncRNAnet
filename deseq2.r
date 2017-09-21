@@ -1,4 +1,9 @@
 #!/usr/bin/env Rscript
+ 
+#######################################################
+# Differential expression analysis module using DESeq2#                   
+#######################################################
+
 args=commandArgs(TRUE)
 library("getopt")
 
@@ -60,7 +65,7 @@ if (!(mode %like% "TCGA-")){
   }
 }
 
-
+# pca analysis 
 pca<-function(input,condition,output){
   
   gene_profile=data.table(input)
@@ -85,7 +90,7 @@ pca<-function(input,condition,output){
   write.table(pca,output,quote=F,row.names=F,sep="\t")
 }
 
-
+# for lncRNA differential expression analysis
 if (mode=="lnc") {
   rawreads <- as.data.frame(data.table::fread(opt$rawreads[1],stringsAsFactors = F))
   factor_list <- as.data.frame(data.table::fread(opt$factorlist[1], header=FALSE))
@@ -100,12 +105,14 @@ if (mode=="lnc") {
   if (  length(factor_list$V2[grep(levels(factor_list$V2)[1],factor_list$V2)]) <3 &   
         length(factor_list$V2[grep(levels(factor_list$V2)[2],factor_list$V2)]) <3  ) {  
     system("echo Not enought replicates "); q(); }
-
+  
+  # conver gene_id to symbol
   symbol_id$id<-gsub("\\..*","",symbol_id$id)
   rawreads[,1]<-gsub("\\..*","",rawreads[,1])
   rawreads<-merge(symbol_id,rawreads,by.x="id",by.y=colnames(rawreads)[1])
   rawreads$id<-NULL
   
+  # sum the reads for each gene symbol
   rawreads_melt <- data.table::data.table(reshape2::melt(rawreads, id = "symbol"))
   rawreads<-data.table::dcast.data.table(rawreads_melt, symbol ~ variable, sum)
   
@@ -117,10 +124,13 @@ if (mode=="lnc") {
   
   if (!is.numeric(countsTable)){ system("echo Data matrix contains non-numeric "); q(); }
   
+  # set the base reference
   deseq_factor<-factor(factor_list[order(match(factor_list$V1,colnames(countsTable))), ]$V2)
   deseq_factor<-factor(deseq_factor, levels=c(levels(deseq_factor)[grep(as.character(factor_list$V2[1]),levels(deseq_factor))], # Tvs N or NvsT
                                               levels(deseq_factor)[-grep(as.character(factor_list$V2[1]),levels(deseq_factor))]))
   colData<-data.frame(row.names=colnames(countsTable),condition=deseq_factor)
+  
+  # differential expression
   dds<-DESeq2::DESeqDataSetFromMatrix(countsTable,colData, ~condition)
   dds <- dds[ rowSums(DESeq2::counts(dds)) > 1, ]
   BiocParallel::register( BiocParallel::MulticoreParam(opt$core))
@@ -157,11 +167,12 @@ if (mode=="lnc") {
   pca(deseq_norm_reads,factor_list,"output/pca.txt")
 }
 
-
+# for circRNA differential expression analysis
 if (mode=="circ") {
   factor_list <- as.data.frame(data.table::fread(opt$factorlist[1], header=FALSE))
   factor_list$V2<-as.factor(factor_list$V2 )
   
+  # loading gene reads counts
   rawreads <- as.data.frame(data.table::fread(opt$rawreads[1],stringsAsFactors = F))
   symbol_id$id<-gsub("\\..*","",symbol_id$id)
   rawreads[,1]<-gsub("\\..*","",rawreads[,1])
@@ -171,11 +182,13 @@ if (mode=="circ") {
   rawreads<-as.data.frame(data.table::dcast.data.table(rawreads_melt, symbol ~ variable, sum))
   rawreads<-reshape2::melt(rawreads)
   
+  # loading circRNA read counts
   circmatrix <- as.data.frame(data.table::fread(opt$circmatrix[1],stringsAsFactors = F))
   circname<-circmatrix[,1] # load circRNA id from first col
   circmatrix<-reshape2::melt(circmatrix)
   colnames(circmatrix)[1]<-colnames(rawreads)[1]
   
+  # merge for combined normalization
   rawreads<-rbind(rawreads,circmatrix)
   
   rawreads<-reshape2::dcast(rawreads,symbol~variable,sum)
@@ -242,7 +255,7 @@ if (mode=="circ") {
   }
 
 
-
+# TCGA datasets output
 if (mode %like% "TCGA-") {
   message("opening TCGA deseq2 result")
   tcga.rds.path<-as.character(TCGA_df[ TCGA_df$cancer == mode,]$rds)
