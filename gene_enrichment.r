@@ -1,4 +1,10 @@
 #!/usr/bin/env Rscript
+
+#########################################################
+# Gene Enrichment analysis module using clusterProfiler #
+# database: KEGG, msigdb, GO, ENCODE ChIP-Seq           #
+#########################################################
+
 args=commandArgs(TRUE)
 library("getopt")
 
@@ -44,6 +50,7 @@ if ("gencodev19" %in% df_opt["annotation",1] ){
   gene_coordinate<-readRDS("v25_gene_coordinate.rds")
 }
 
+# loading database files
 db_path<-list(gencodev19=data.frame(msigdb_hm="msigdb/h.all.v5.2.entrez.gmt",
                                     msigdb_tf="msigdb/c3.tft.v5.2.entrez.gmt",
                                     encode_tf="enchriment_ENCODE_hg19_ChIP_3000_1000_q0.01.feather"),
@@ -64,6 +71,7 @@ run_time_message(paste0("Analysis started\n",
                         "enrich_type: ",enrich_type,"\n"
                         ))
 
+# co-expressed genes filter
 ################################################################################
 rna_idx<-ifelse( length(which("lncRNA" %in% colnames(linc_coexp_pairs))) == 1,which("lncRNA" %in% colnames(linc_coexp_pairs)),
                  ifelse(length(which("circRNA" %in% colnames(linc_coexp_pairs))) == 1,which("circRNA" %in% colnames(linc_coexp_pairs)),"NA"))
@@ -81,8 +89,8 @@ if(cutoff_reg == "in" ) {
   linc_coexp_pairs_filtered<-linc_coexp_pairs_filtered[which(!(linc_coexp_pairs_filtered$cor > cutoff_pos &  linc_coexp_pairs_filtered$cor < cutoff_neg)), ]
 }
 
-
 ################################################################################## 
+
 write_error_fun<-function(comment){ 
   run_time_message(paste0("Error: ",comment))
   # error tab
@@ -119,6 +127,7 @@ write_error_fun<-function(comment){
   write.table(node_df,paste0("output/pathway_network_node_",enrich_type,"_",query_gene,"_",cutoff_reg,"_",cutoff_pos,cutoff_neg,".txt"),sep = "\t",quote=F,row.names = F)
   
 }
+
 gene_symbol<-linc_coexp_pairs_filtered$co_exp_gene
 run_time_message(paste0("number of gene before entrenz id conversion: ", length(gene_symbol[!gene_symbol %in% query_gene])))
 if(length(gene_symbol[!gene_symbol %in% query_gene])<=0) {write_error_fun("No co-expressed gene, please lower the correlation cutoff");q()  } 
@@ -133,13 +142,14 @@ if(class(gene.df1)=="try-error") { write_error_fun("entrenz ID conversion error,
 
 gene<-gene.df1$ENTREZID
 
-# 
+# prep background genes
 gene_bd<-unique(Reduce(union, list(gene.df3$ENTREZID)))
 gene_bd_symbol<-linc_coexp_pairs$co_exp_gene
 
 run_time_message(paste0("number of gene after entrenz id conversion: ", length(gene)))
 if(length(gene)<=0) {write_error_fun("No co-expressed gene after entrenz ID conversion, please lower the correlation cutoff");q()  } 
 
+# kegg function
 run_kegg<-function(){
   enrich_res <- enrichKEGG(gene, organism="hsa",
                            pvalueCutoff = 0.05,
@@ -152,6 +162,7 @@ run_kegg<-function(){
   return(enrich_res)
 }
 
+# go mf function
 run_mf<-function(){
   enrich_res<-enrichGO(gene,
                        'org.Hs.eg.db',
@@ -164,6 +175,8 @@ run_mf<-function(){
   enrich_res<-as.data.frame(enrich_res) 
   return(enrich_res)
 }
+
+# go bp function
 run_bp<-function(){
   enrich_res<-enrichGO(gene,
                        'org.Hs.eg.db',
@@ -176,6 +189,8 @@ run_bp<-function(){
   enrich_res<-as.data.frame(enrich_res) 
   return(enrich_res)
 }
+
+# go cc function
 run_cc<-function(){
   enrich_res<-enrichGO(gene,
                        'org.Hs.eg.db',
@@ -190,6 +205,7 @@ run_cc<-function(){
   return(enrich_res)
 }
 
+# msigdb function
 run_hm<-function(){
   h <- read.gmt(msigdb_hm)
   enrich_res<- enricher(gene, TERM2GENE=h,
@@ -204,7 +220,7 @@ run_hm<-function(){
   return(enrich_res)
 }
 
-
+# transcription factor motif function
 run_tf<-function(){
   h <- read.gmt(msigdb_tf)
   enrich_res<- enricher(gene, TERM2GENE=h,
@@ -217,6 +233,7 @@ run_tf<-function(){
   return(enrich_res)
 }
 
+# encode ChIP-Seq function
 run_encodetf<-function(){
   library(feather)
   
@@ -264,9 +281,9 @@ run_time_message(paste0("number of enriched terms: ", nrow(egmt_df)))
 if(is.null(nrow(egmt_df)) )  { write_error_fun(paste0("Enrichment error, number of input gene after entrenz ID conversion: ",length(gene)));q()  } 
 if(nrow(egmt_df)<=0)   { write_error_fun(paste0("No term was enriched, number of input gene after entrenz ID conversion: ",length(gene)));q()  } 
 
-
+# entrenz to symbol
 if (enrich_type!= "encodetf"){
-  term_id_dup<-data.frame() # conver ID to symbol
+  term_id_dup<-data.frame() 
   for (j in seq(1:nrow(egmt_df[,]))){ 
     term_id_dup_tmp<-egmt_df[rep(j, each=length(strsplit(egmt_df[j,]$geneID,"/")[[1]])),]
     term_id_dup_tmp$geneID<-strsplit(as.character(egmt_df[j,]$geneID),"/")[[1]]
@@ -288,6 +305,7 @@ run_time_message("writing enrichment table")
 # remove pvalue=0
 egmt_df<-egmt_df[egmt_df$pvalue !=0,]
 
+# output most signifcant terms
 if(nrow(egmt_df)> 15 ){
   egmt_df_15<-egmt_df[1:15,]
 } else {
