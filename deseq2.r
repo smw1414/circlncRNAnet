@@ -126,7 +126,7 @@ if (mode=="lnc") {
   BiocParallel::register( BiocParallel::MulticoreParam(opt$core))
   minreplicates<-min(length(factor_list[factor_list$V2 %in% levels(factor_list$V2)[1],]$V1),
                      length(factor_list[factor_list$V2 %in% levels(factor_list$V2)[2],]$V1))
-  dds<-DESeq2::DESeq(dds, parallel = T,minReplicatesForReplace= minreplicates)
+  dds<-DESeq2::DESeq(dds, parallel = T)
   res <- DESeq2::results(dds, parallel = T) 
   res_tab<-as.data.frame(res)
   
@@ -208,7 +208,7 @@ if (mode=="circ") {
   BiocParallel::register(BiocParallel::MulticoreParam(opt$core))
   minreplicates<-min(length(factor_list[factor_list$V2 %in% levels(factor_list$V2)[1],]$V1),
                      length(factor_list[factor_list$V2 %in% levels(factor_list$V2)[2],]$V1))
-  dds<-DESeq2::DESeq(dds, parallel = T,minReplicatesForReplace= minreplicates)
+  dds<-DESeq2::DESeq(dds, parallel = T)
   res <- DESeq2::results(dds, parallel = T) 
   res_tab<-as.data.frame(res)
   
