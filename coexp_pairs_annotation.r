@@ -21,7 +21,7 @@ if ( is.null(opt$output ) ) { opt$output = "output.txt" }
 
 library("data.table")
 
-annotation=readRDS("/home/wsm/bam/lncRNAdb2/dbNSFP3.2_gene_lite.rds")
+annotation=readRDS("dbNSFP3.2_gene_lite.rds")
 coexp=fread(opt$input,header=T,sep="\t")
 output=merge(coexp,annotation,all.x=T,by.x="co_exp_gene",by.y="Gene_name")
 write.table(output,opt$output,quote=F,sep="\t",row.names=F)
