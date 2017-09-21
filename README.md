@@ -46,7 +46,7 @@ unzip tcga.zip
 ### **3. Perform the differential expression analysis**
   
 #### **Preperation of gene matrix file**
-* Please refer http://http://app.cgu.edu.tw/circlnc/circlnc_tutorial/_book/data-input.html#preparation-of-input-files  
+* Please refer http://app.cgu.edu.tw/circlnc/circlnc_tutorial/_book/data-input.html#preparation-of-input-files  
 <br>  
 
 #### **Perform the differential expression analysis**
@@ -61,6 +61,11 @@ system("./lncrna_local_run_deg.sh <gene reads count table> <demographic table>")
 # circRNA 
 system("./circrna_local_run_deg.sh <gene reads count table> <demographic table> <circRNA reads count table>")
 
+# TCGA data 
+# Please refer the table below for the available TCGA datasets
+system("./lncrna_local_run_deg_tcga.sh <cancer code>")
+system("./lncrna_local_run_deg_tcga.sh TCGA-LUAD")
+
 # example of demo datset  
 # lncRNA 
 system("./lncrna_local_run_deg.sh demo_file/TCGA_COADREAD_GENCODEV25_raw_read_count.txt demo_file/TCGA_COADREAD_GENCODEV25_condition.txt")
@@ -68,7 +73,16 @@ system("./lncrna_local_run_deg.sh demo_file/TCGA_COADREAD_GENCODEV25_raw_read_co
 # circRNA  
 system("./circrna_local_run_deg.sh demo_file/encode_example_Gene_raw_read_count_casted.txt demo_file/encode_example_circRNA_condition.txt demo_file/encode_example_circRNA_raw_read_count_casted.txt ") 
 ```
-  
+
+TCGA datasets|          |         |
+----------|----------|---------|---------
+TCGA-BLCA |TCGA-ESCA |TCGA-LIHC|TCGA-PRAD
+TCGA-BRCA |TCGA-HNSC |TCGA-LUAD|TCGA-READ
+TCGA-CESC |TCGA-KICH |TCGA-LUSC|TCGA-STAD
+TCGA-CHOL |TCGA-KIRC |TCGA-PAAD|TCGA-THCA
+TCGA-COAD |TCGA-KIRP |TCGA-PCPG|TCGA-UCEC
+
+
 <br> 
   
 ### **4. Visualization of differential expresion results/table** 
