@@ -1,5 +1,9 @@
 #!/usr/bin/env Rscript
-#######!/share/apps/R/bin/Rscript
+
+#########################
+# heatmap output module #
+#########################
+
 args=commandArgs(TRUE)
 library("getopt")
 
@@ -58,8 +62,8 @@ if( cutoff_reg == "ex") {
 if(cutoff_reg == "in" ) { 
   linc_coexp_pairs_filtered<-linc_coexp_pairs_filtered[which(!(linc_coexp_pairs_filtered$cor > cutoff_pos &  linc_coexp_pairs_filtered$cor < cutoff_neg)), ]
 }
-#filter list if gene lusist to large
-gene_limit<-5000
+#filter list if gene l to large
+gene_limit<-500
  if (nrow(linc_coexp_pairs_filtered) > gene_limit ) {
    rank<-rank(abs(linc_coexp_pairs_filtered$cor))
    linc_coexp_pairs_filtered<-linc_coexp_pairs_filtered[which(rank> (nrow(linc_coexp_pairs_filtered)-gene_limit)),]
@@ -69,11 +73,12 @@ print(nrow(linc_coexp_pairs_filtered
            ))
 #######################  filtering END  #########################################
  
-  
+  # prep read count table 
   circ_gene_merged_t<-as.data.table(melt(circ_gene_merged_t))
   circ_gene_merged_t<-as.data.frame(dcast(circ_gene_merged_t,Var1~Var2,sum))
   row.names(circ_gene_merged_t)<-circ_gene_merged_t$Var1
   circ_gene_merged_t$Var1<-NULL
+  
   # order correlation by cor
   coexpgene_sym<-unique(linc_coexp_pairs_filtered[order(linc_coexp_pairs_filtered[,"cor"],decreasing = T),]$co_exp_gene)
   heatmaprow<-c(query_gene,  setdiff(coexpgene_sym, query_gene))
@@ -97,13 +102,12 @@ print(nrow(linc_coexp_pairs_filtered
   colnames(heatmapann)<-c("type")
   sortedtab$samples<-NULL
 
-  # annotation processing
-  #roder factorlevel
-  
-  factor_list$V2<- factor(factor_list$V2, levels = c(as.character(factor_list[[2]][1]),
-                                                     as.character(factor_list$V2[-grep(as.character(factor_list[[2]][1]),factor_list$V2)][1])))
-  color_type = c(  N="blue",T="red")
-  ann_colors = list(type= color_type)
+  # coloumn annotation 
+  # 
+  # factor_list$V2<- factor(factor_list$V2, levels = c(as.character(factor_list[[2]][1]),
+  #                                                    as.character(factor_list$V2[-grep(as.character(factor_list[[2]][1]),factor_list$V2)][1])))
+  # color_type = c(  N="blue",T="red")
+  # ann_colors = list(type= color_type)
   
   pdfwidth<-length(colnames(sortedtab))*0.05+5
   pdfwidth<-ifelse( pdfwidth > 45,45, pdfwidth)
@@ -144,7 +148,7 @@ print(nrow(linc_coexp_pairs_filtered
          width =pdfwidth,
          height = pdfheight)
   
-  
+# output rds for plotly use  
   p<-ggplot(xx2, aes(  Var2, Var1)) + 
     geom_raster(aes(fill = value)) + 
     scale_fill_gradientn(colours=c('blue', 'black', 'gold'),
