@@ -74,12 +74,13 @@ system("./lncrna_local_run_deg.sh demo_file/TCGA_COADREAD_GENCODEV25_raw_read_co
 system("./circrna_local_run_deg.sh demo_file/encode_example_Gene_raw_read_count_casted.txt demo_file/encode_example_circRNA_condition.txt demo_file/encode_example_circRNA_raw_read_count_casted.txt ") 
 ```
 
-* TCGA datasets
-|TCGA-BLCA |TCGA-ESCA |TCGA-LIHC|TCGA-PRAD|
-|TCGA-BRCA |TCGA-HNSC |TCGA-LUAD|TCGA-READ|
-|TCGA-CESC |TCGA-KICH |TCGA-LUSC|TCGA-STAD|
-|TCGA-CHOL |TCGA-KIRC |TCGA-PAAD|TCGA-THCA|
-|TCGA-COAD |TCGA-KIRP |TCGA-PCPG|TCGA-UCEC|
+|TCGA datasets| | | |  
+|----------|----------|---------|---------|  
+|TCGA-BLCA |TCGA-ESCA |TCGA-LIHC|TCGA-PRAD|  
+|TCGA-BRCA |TCGA-HNSC |TCGA-LUAD|TCGA-READ|  
+|TCGA-CESC |TCGA-KICH |TCGA-LUSC|TCGA-STAD|  
+|TCGA-CHOL |TCGA-KIRC |TCGA-PAAD|TCGA-THCA|  
+|TCGA-COAD |TCGA-KIRP |TCGA-PCPG|TCGA-UCEC|  
 
 
 <br> 
