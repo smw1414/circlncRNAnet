@@ -23,6 +23,15 @@ qsum=fread("../output/q_cor_summary.txt",header=T,sep="\t")
 colnames(qsum)=c("Query","cor > 0.5 (% of coexpressed genes)","pvalue < 0.05 (% of coexpressed genes)")
 jobid= gsub("/data/lancer_jobs/|/coexpc","",getwd())
 
+run_circos="./circos_zoom.r"
+run_gene_enrichment <- "./gene_enrichment.r"
+run_scatterplot <- "./scatterplot.r"
+run_heatmap <- "./heatmap.R"
+run_triple_network_circRNA_RBP_2step <- "./triple_network_circRNA_RBP_2step.R"
+run_triple_network_circRNA_sponge_2step <- "./triple_network_circRNA_sponge_2step.R"
+run_triple_network_lncRNA_RBP_2step <- "./triple_network_lncRNA_RBP_2step.R"
+run_triple_network_lncRNA_sponge_2step <- "./triple_network_lncRNA_sponge_2step.R"
+
 #data=data[,.(gene,log2FoldChange,pvalue,Gene_full_name,Gene_old_names,Gene_other_names,Coexpressed_gene="Link")][order(-abs(log2FoldChange))]
 # Define UI for application that draws a histogram
 ui <- shinyUI(fluidPage(
@@ -321,7 +330,7 @@ server <- shinyServer(function(input, output,session) {
 #        rds<-paste0("../output/",input$qgene,"_",input$coxgene,"_scatterplot.rds")
 #        if(!file.exists(rds)){
 #          message("if")
-#          system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/scatterplot_20161231_r1.r -q ",input$qgene," -c ",input$coxgene))
+#          system(paste0("cd ..;",run_scatterplot," -q ",input$qgene," -c ",input$coxgene))
 #        }
 #        message(" read rds")
 #        p<-readRDS(rds)
@@ -332,7 +341,7 @@ server <- shinyServer(function(input, output,session) {
    
    output$scatterplot <- renderImage({
      if(!file.exists(paste0("../output/",input$qgene,"_",input$coxgene,"_scatterplot.png"))){
-       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/scatterplot_20161231_r1.r -q ",input$qgene," -c ",input$coxgene))
+       system(paste0("cd ..;",run_scatterplot," -q ",input$qgene," -c ",input$coxgene))
      }
      
      list(src = paste0("../output/",input$qgene,"_",input$coxgene,"_scatterplot.png"),
@@ -380,8 +389,8 @@ server <- shinyServer(function(input, output,session) {
      if(!file.exists(paste("../output/enrichment_res_kegg",input$qgene,cor_exclude(),paste0(input$corr[2],input$corr[1]),".png",sep="_"))){
        show("loading-pathway")
        disable_act_but()
-       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/gene_enrichment_20170322.r -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e kegg"))
-       # system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/gene_enrichment_20161209.r -p 0.5 -n -0.5 -r ex -g FIRRE -e kegg"))
+       system(paste0("cd ..;",run_gene_enrichment," -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e kegg"))
+       # system(paste0("cd ..;",run_gene_enrichment," -p 0.5 -n -0.5 -r ex -g FIRRE -e kegg"))
        enable_act_but()
        hide("loading-pathway")
      }else{
@@ -425,7 +434,7 @@ server <- shinyServer(function(input, output,session) {
      if(!file.exists(paste("../output/enrichment_res_hm",input$qgene,cor_exclude(),paste0(input$corr[2],input$corr[1]),".png",sep="_"))){
        show("loading-pathwayhm")
        disable_act_but()
-       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/gene_enrichment_20170322.r -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e hm"))
+       system(paste0("cd ..;",run_gene_enrichment," -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e hm"))
        enable_act_but()
        hide("loading-pathwayhm")
      }else{
@@ -467,7 +476,7 @@ server <- shinyServer(function(input, output,session) {
      if(!file.exists(paste("../output/enrichment_res_bp",input$qgene,cor_exclude(),paste0(input$corr[2],input$corr[1]),".png",sep="_"))){
        show("loading-bp")
        disable_act_but()
-       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/gene_enrichment_20170322.r -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e bp"))
+       system(paste0("cd ..;",run_gene_enrichment," -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e bp"))
        enable_act_but()
        hide("loading-bp")
      }else{
@@ -510,7 +519,7 @@ server <- shinyServer(function(input, output,session) {
      if(!file.exists(paste("../output/enrichment_res_mf",input$qgene,cor_exclude(),paste0(input$corr[2],input$corr[1]),".png",sep="_"))){
        show("loading-mf")
        disable_act_but()
-       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/gene_enrichment_20170322.r -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e mf"))
+       system(paste0("cd ..;",run_gene_enrichment," -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e mf"))
        enable_act_but()
        hide("loading-mf")
      }else{
@@ -555,7 +564,7 @@ server <- shinyServer(function(input, output,session) {
      if(!file.exists(paste("../output/enrichment_res_cc",input$qgene,cor_exclude(),paste0(input$corr[2],input$corr[1]),".png",sep="_"))){
        show("loading-cc")
        disable_act_but()
-       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/gene_enrichment_20170322.r -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e cc"))
+       system(paste0("cd ..;",run_gene_enrichment," -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e cc"))
        enable_act_but()
        hide("loading-cc")
      }else{
@@ -599,7 +608,7 @@ server <- shinyServer(function(input, output,session) {
      if(!file.exists(paste("../output/enrichment_res_tf",input$qgene,cor_exclude(),paste0(input$corr[2],input$corr[1]),".png",sep="_"))){
        show("loading-tf_msigdb")
        disable_act_but()
-       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/gene_enrichment_20170322.r -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e tf"))
+       system(paste0("cd ..;",run_gene_enrichment," -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e tf"))
        enable_act_but()
        hide("loading-tf_msigdb")
      }else{
@@ -642,7 +651,7 @@ server <- shinyServer(function(input, output,session) {
      if(!file.exists(paste("../output/enrichment_res_encodetf",input$qgene,cor_exclude(),paste0(input$corr[2],input$corr[1]),".png",sep="_"))){
        show("loading-tf_encode")
        disable_act_but()
-       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/gene_enrichment_20170322.r -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e encodetf"))
+       system(paste0("cd ..;",run_gene_enrichment," -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene," -e encodetf"))
        enable_act_but()
        hide("loading-tf_encode")
      }else{
@@ -688,7 +697,7 @@ server <- shinyServer(function(input, output,session) {
 #      if(!file.exists(paste("../output/heatmap",input$qgene,input$corr[2],input$corr[1],cor_exclude(),".png",sep="_"))){
 #        show("loading-heatmap")
 #        disable_act_but()
-#        system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/heatmap_r1.R -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene))
+#        system(paste0("cd ..;",run_heatmap," -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene))
 #        enable_act_but()
 #        hide("loading-heatmap")
 #      }else{
@@ -710,7 +719,7 @@ output$heatmap <- renderPlotly({
      if(!file.exists(rds)){
        show("loading-heatmap")
        disable_act_but()
-       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/heatmap_r1.R -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene))
+       system(paste0("cd ..;",run_heatmap," -p ",input$corr[2]," -n ",input$corr[1]," -r ",cor_exclude()," -g ",input$qgene))
        enable_act_but()
        hide("loading-heatmap")
      }else{
@@ -740,7 +749,7 @@ network_rbp_check<-reactive({
   if(!file.exists(out_txt_nodel1)){
     show("loading-crbp")
     disable_act_but()
-    system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/triple_network_circRNA_RBP_2step_20170313.R -q ",input$qgene," -r ",cor_exclude()," -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
+    system(paste0("cd ..;",run_triple_network_circRNA_RBP_2step," -q ",input$qgene," -r ",cor_exclude()," -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
     enable_act_but()
     hide("loading-crbp")
   }else{
@@ -960,8 +969,8 @@ network_rbpg_act <-eventReactive(input$apply_value_rbp,{
   if(!file.exists(out_txt_nodel2) ){
     show("loading-crbpg")
     disable_act_but()
-    system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/triple_network_circRNA_RBP_2step_20170313.R -q ",input$qgene," -b ",g," -r ",cor_exclude()," -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
-    #       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/triple_network_circRNA_RBP_2step_20170313.R -q ",input$qgene," -r ex -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
+    system(paste0("cd ..;",run_triple_network_circRNA_RBP_2step," -q ",input$qgene," -b ",g," -r ",cor_exclude()," -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
+    #       system(paste0("cd ..;",run_triple_network_circRNA_RBP_2step," -q ",input$qgene," -r ex -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
     enable_act_but()
      hide("loading-crbpg")
   }else{
@@ -991,7 +1000,7 @@ output$network_rbpg <- renderVisNetwork({
 # 
 #   if(!file.exists(out_txt_nodel1)){
 #     show("loading-lncrbp")
-#     system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/triple_network_circRNA_RBP_2step_20170313.R -q ",input$qgene," -r ex -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
+#     system(paste0("cd ..;",run_triple_network_circRNA_RBP_2step," -q ",input$qgene," -r ex -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
 #     hide("loading-lncrbp")
 #   }else{
 #     hide("loading-lncrbp")
@@ -1062,8 +1071,8 @@ output$network_rbpg <- renderVisNetwork({
 #   
 #   if(!file.exists(out_txt_nodel2)){
 #     show("loading-lncrbpg")
-#     system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/triple_network_circRNA_RBP_2step_20170313.R -q ",input$qgene," -b ",g," -r ex -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
-#     #       system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/triple_network_circRNA_RBP_2step_20170313.R -q ",input$qgene," -r ex -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
+#     system(paste0("cd ..;",run_triple_network_circRNA_RBP_2step," -q ",input$qgene," -b ",g," -r ex -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
+#     #       system(paste0("cd ..;",run_triple_network_circRNA_RBP_2step," -q ",input$qgene," -r ex -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
 #     hide("loading-lncrbpg")
 #   }else{
 #     hide("loading-lncrbpg")
@@ -1094,7 +1103,7 @@ network_mir_check<-reactive({
   if(!file.exists(out_txt_nodel1)){
     show("loading-cmir")
     disable_act_but()
-    system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/triple_network_circRNA_sponge_2step_20170313.R -q ",input$qgene," -r ",cor_exclude()," -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
+    system(paste0("cd ..;",run_triple_network_circRNA_sponge_2step," -q ",input$qgene," -r ",cor_exclude()," -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
     enable_act_but()
     hide("loading-cmir")
   }else{
@@ -1310,7 +1319,7 @@ network_mirg_act<-eventReactive(input$apply_value_sponge,{
   if(!file.exists(out_txt_nodel2)){
     show("loading-cmirg")
     disable_act_but()
-    system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/triple_network_circRNA_sponge_2step_20170313.R -q ",input$qgene," -b ",g," -r ",cor_exclude()," -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
+    system(paste0("cd ..;",run_triple_network_circRNA_sponge_2step," -q ",input$qgene," -b ",g," -r ",cor_exclude()," -d 2"," -p ",input$corr[2]," -n ",input$corr[1]))
     enable_act_but()
     hide("loading-cmirg")
   }else{
@@ -1390,7 +1399,7 @@ output$circos <- renderImage({
   if(!file.exists(paste0("../output/",input$qgene,"_",input$top,".png"))){
     show("loading-circos")
     disable_act_but()
-    system(paste0("cd ..;/home/wsm/bam/lncRNAdb2/circ_zoom_20161027_r1.r -f output -q ",input$qgene," -t ",input$top))
+    system(paste0("cd ..;",run_circos," -f output -q ",input$qgene," -t ",input$top))
     enable_act_but()
     hide("loading-circos")
   }else{
