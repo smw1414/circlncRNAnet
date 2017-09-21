@@ -1,5 +1,9 @@
 #!/usr/bin/env Rscript
-######!/share/apps/R/bin/Rscript
+
+#############################
+# circos plot output module #
+#############################
+
 args=commandArgs(TRUE)
 
 library(getopt)
@@ -24,11 +28,11 @@ if (is.null(opt2$query) || is.null(opt2$folder)) {
 # define default value
 if ( is.null(opt2$top ) ) { opt2$top = 25 }
 ncoexp<-opt2$top
-# read cytoband info
+
 library("circlize")
-
-
 df_opt<-readRDS(paste0(opt2$folder[1],'/opt.rds'))
+
+# read cytoband info
 if (df_opt["annotation","V1"]=="gencodev25"){
   cytoBand = read.cytoband(species = "hg38")
 
@@ -40,6 +44,8 @@ if (df_opt["annotation","V1"]=="gencodev19"){
 cytoband = cytoBand$df
 chromosome = cytoBand$chromosome
 chr.len = cytoBand$chr.len
+
+# include autosome only and remove chrM
 chr.len<-chr.len[nchar(names(chr.len)) < 7 ]
 chr.len<-chr.len[!names(chr.len) %in% "chrM"  ]
 cytoband$V1<-as.character(cytoband$V1)
@@ -47,21 +53,22 @@ cytoband<-cytoband[nchar(cytoband$V1) < 7,]
 cytoband<-cytoband[!cytoband$V1 %in% "chrM",]
 
 
-#bed processing  
+# bed processing  
 #linc_coexp_pairs<-readRDS("output/")   ### input table
 linc_coexp_pairs<-readRDS(paste0(opt2$folder[1],'/linc_coexp_pairs.rds'))  
 #  ### gene 
 
+# bed for co-expressed gene
+# bed2 for query gene
 if (df_opt["mode","V1"]=="lnc"){
-  bed<-linc_coexp_pairs[linc_coexp_pairs$lncRNA ==opt2$query[1],]
-  bed2<-unique(bed[,c("chr","lncRNA_start","lncRNA_start","lncRNA")])  #
+  bed<-linc_coexp_pairs[linc_coexp_pairs$lncRNA ==opt2$query[1],] # 
+  bed2<-unique(bed[,c("chr","lncRNA_start","lncRNA_start","lncRNA")])  
 }
 if (df_opt["mode","V1"]=="circ"){
   bed<-linc_coexp_pairs[linc_coexp_pairs$circRNA ==opt2$query[1],]
   bed2<-unique(bed[,c("circRNA_chr","circRNA_5exon","circRNA_5exon","circRNA")])  #
   
 }
-
 
 bed2$value<-1
 bed2<-bed2[,c(1,2,3,5,4)]
@@ -86,7 +93,7 @@ bed<-bed[-grep(as.character(bed2$chr),bed$chr),]
 bed_zoom[[1]] = paste0(bed_zoom[[1]])
 bed = rbind(bed, bed_zoom)
 
-
+# for link 
 region2_inc<-bed[bed$value < 0,]# inverse correlation
 region2_inc<-bed[order(bed$value) ,][1:ncoexp,] 
 region2_inc$value<-0
@@ -97,6 +104,7 @@ region1<-bed2[rep(1, each=nrow(region2_inc)),]
 
 chr.len<-chr.len[-grep(as.character(bed2$chr),names(chr.len))]
 
+# ploting
 png(paste0("output/",opt2$query,"_",opt2$top,".png"),units="px", width=800, height=800, res=150)
 par(mar = c(1, 1, 1, 1))
 circos.par(start.degree = 135)
