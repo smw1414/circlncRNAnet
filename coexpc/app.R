@@ -48,7 +48,7 @@ ui <- shinyUI(fluidPage(
         helpText("Co-expressed gene"),
       	sliderInput("corr", "Pearson's correlation coefficient (default: |cor| > 0.5)",
                     min = -1, max = 1, value = c(-0.5, 0.5),step = 0.05),
-        checkboxInput('exclude', 'Exclude range', TRUE),hr(),
+        checkboxInput('exclude', 'Exclude range', TRUE),
         hr(),
         tags$p(paste("Number of co-expressed gene(s):")),
         verbatimTextOutput("number_coexp"),
