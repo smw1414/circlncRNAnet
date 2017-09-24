@@ -31,6 +31,8 @@ run_triple_network_circRNA_RBP_2step <- "./triple_network_circRNA_RBP_2step.R"
 run_triple_network_circRNA_sponge_2step <- "./triple_network_circRNA_sponge_2step.R"
 run_triple_network_lncRNA_RBP_2step <- "./triple_network_lncRNA_RBP_2step.R"
 run_triple_network_lncRNA_sponge_2step <- "./triple_network_lncRNA_sponge_2step.R"
+run_randomization<-"./randomization.R"
+
 
 ui <- shinyUI(fluidPage(useShinyjs(),
                         # Application title
@@ -83,7 +85,21 @@ ui <- shinyUI(fluidPage(useShinyjs(),
                                          br(),
                                          uiOutput("co_exp_gene"),
                                          imageOutput("scatterplot")
+                                       )),
+                              tabPanel('Randomized correlation',
+                                       value = "rand_panel",
+                                       column(
+                                         12,
+                                         br(),
+                                         hidden(div(
+                                           id = "loading-rand",
+                                           img(src = "../../../images/loading-1.gif")
+                                         )),
+                                          strong("Obs: Observation, Rand: Randomization"),
+                                         plotlyOutput('randomization')#, height = "300px")
                                        ))
+                              
+                              
                             )
                             #####################################################
                             
@@ -388,7 +404,24 @@ server <- shinyServer(function(input, output,session) {
                 height = "100%",
           alt = "Generating Scatter Plot...")
    }, deleteFile = FALSE)
-        
+  
+   output$randomization <- renderPlotly({
+
+     rds<-paste0("../output/random_",input$qgene,".rds")
+     message(rds)
+     if(!file.exists(rds)){
+       show("loading-rand")
+       disable_act_but()
+       system(paste0("cd ..;",run_randomization," -g ",input$qgene))
+       enable_act_but()
+       hide("loading-rand")
+     }else{
+       hide("loading-rand")
+     }
+     p<-readRDS(rds)
+     ggplotly(p)
+   })
+         
    output$number_coexp <- renderPrint({
      cat(n_coexp_gene())
    })
