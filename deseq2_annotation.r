@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
-######!/share/apps/R/bin/Rscript
-##### ! /usr/bin/env Rscript
+
+##########################
+# gene annotation module #
+##########################
 args=commandArgs(TRUE)
 library("getopt")
 
