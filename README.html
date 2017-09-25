@@ -121,7 +121,6 @@ $(document).ready(function () {
 
 <div id="use-of-circlncrnanet-in-local-mode" class="section level1">
 <h1><strong>Use of circlncRNAnet in local mode</strong></h1>
-<hr />
 <p>This instruction will guide the users to use the circlncRNAnet in local mode. To set up a local run mode, the following three items are required:</p>
 <ol style="list-style-type: decimal">
 <li>Linux environment.<br />
@@ -152,7 +151,7 @@ q(&quot;no&quot;)
 <p><br></p>
 </div>
 <div id="download-the-db-files" class="section level3">
-<h3><strong>2. Download the db files </strong></h3>
+<h3><strong>2. Download the db files</strong></h3>
 <pre><code>wget http://app.cgu.edu.tw/circlnc/db/db.zip  # 2GB
 wget http://app.cgu.edu.tw/circlnc/tcga/tcga.zip # 1.6GB
 unzip db.zip  
@@ -164,7 +163,7 @@ unzip tcga.zip  </code></pre>
 <div id="preperation-of-gene-matrix-file" class="section level4">
 <h4><strong>Preperation of gene matrix file</strong></h4>
 <ul>
-<li>Please refer <a href="http://http://app.cgu.edu.tw/circlnc/circlnc_tutorial/_book/data-input.html#preparation-of-input-files" class="uri">http://http://app.cgu.edu.tw/circlnc/circlnc_tutorial/_book/data-input.html#preparation-of-input-files</a><br />
+<li>Please refer <a href="http://app.cgu.edu.tw/circlnc/circlnc_tutorial/_book/data-input.html#preparation-of-input-files" class="uri">http://app.cgu.edu.tw/circlnc/circlnc_tutorial/_book/data-input.html#preparation-of-input-files</a><br />
 <br></li>
 </ul>
 </div>
@@ -181,12 +180,59 @@ system(&quot;./lncrna_local_run_deg.sh &lt;gene reads count table&gt; &lt;demogr
 # circRNA 
 system(&quot;./circrna_local_run_deg.sh &lt;gene reads count table&gt; &lt;demographic table&gt; &lt;circRNA reads count table&gt;&quot;)
 
+# TCGA data 
+# Please refer the table below for the available TCGA datasets
+system(&quot;./lncrna_local_run_deg_tcga.sh &lt;cancer code&gt;&quot;)
+system(&quot;./lncrna_local_run_deg_tcga.sh TCGA-LUAD&quot;)
+
 # example of demo datset  
 # lncRNA 
 system(&quot;./lncrna_local_run_deg.sh demo_file/TCGA_COADREAD_GENCODEV25_raw_read_count.txt demo_file/TCGA_COADREAD_GENCODEV25_condition.txt&quot;)
 
 # circRNA  
 system(&quot;./circrna_local_run_deg.sh demo_file/encode_example_Gene_raw_read_count_casted.txt demo_file/encode_example_circRNA_condition.txt demo_file/encode_example_circRNA_raw_read_count_casted.txt &quot;) </code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>TCGA datasets</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TCGA-BLCA</td>
+<td>TCGA-ESCA</td>
+<td>TCGA-LIHC</td>
+<td>TCGA-PRAD</td>
+</tr>
+<tr class="even">
+<td>TCGA-BRCA</td>
+<td>TCGA-HNSC</td>
+<td>TCGA-LUAD</td>
+<td>TCGA-READ</td>
+</tr>
+<tr class="odd">
+<td>TCGA-CESC</td>
+<td>TCGA-KICH</td>
+<td>TCGA-LUSC</td>
+<td>TCGA-STAD</td>
+</tr>
+<tr class="even">
+<td>TCGA-CHOL</td>
+<td>TCGA-KIRC</td>
+<td>TCGA-PAAD</td>
+<td>TCGA-THCA</td>
+</tr>
+<tr class="odd">
+<td>TCGA-COAD</td>
+<td>TCGA-KIRP</td>
+<td>TCGA-PCPG</td>
+<td>TCGA-UCEC</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
 </div>
 </div>
