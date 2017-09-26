@@ -20,14 +20,10 @@ if ( is.null(opt$query_gene)) {
 }
 
 query_gene<-opt$query_gene[1]
-# cutoff_pos<-opt$cutoff_pos[1]
-# cutoff_neg<-opt$cutoff_neg[1]
-# cutoff_reg<-opt$cutoff_reg[1]
+
 # query_gene <- "CCAT1"
 # query_gene <- "chr10_97437191_97438703_rev"
-# cutoff_pos <- 0.5
-# cutoff_neg <- -0.5
-# cutoff_reg <- "ex"
+
 library(data.table)
 library(WGCNA)
 library(reshape2)
@@ -72,6 +68,8 @@ bg_genes<-intersect(linc_coexp_pairs$co_exp_gene,norm_tbl$gene)
 bg_genes<-bg_genes[!bg_genes %in% query_gene]
 bg_genes<-sample(bg_genes,number_subset_genes)
 #co_exp_genes<-bg_genes
+
+# ramdization function
 rand_r<-function(reptimes,co_exp_genes,titles){
   
   rest_tbl<-t(norm_tbl[gene != query_gene  & gene %in% co_exp_genes ,2:ncol(norm_tbl),with=F])
@@ -126,12 +124,6 @@ bg_genes_randam$cortbl$type<-"Rand"
 
 # generation of signifcantly correlated table
 p_cutoff<-1
-# rna_idx<-ifelse( length(which("lncRNA" %in% colnames(linc_coexp_pairs))) == 1,which("lncRNA" %in% colnames(linc_coexp_pairs)),
-#                  ifelse(length(which("circRNA" %in% colnames(linc_coexp_pairs))) == 1,which("circRNA" %in% colnames(linc_coexp_pairs)),"NA"))
-# if (rna_idx =="NA"){q();}
-# rnacolumn<-linc_coexp_pairs[,colnames(linc_coexp_pairs)[rna_idx]]
-
-# linc_coexp_pairs_filtered<-linc_coexp_pairs[ rnacolumn %in%  query_gene , ]
 
 co_exp_tbl<-unique(linc_coexp_pairs_filtered[,c("co_exp_gene","cor","cor_p")])
 co_exp_tbl<-co_exp_tbl[co_exp_tbl$co_exp_gene != query_gene,]
@@ -156,12 +148,5 @@ p<-ggplot(co_exp_tbl[,], aes(cor,  fill = type, colour = type)) +
   xlab("correlation")#+
  # ylab("Percentage")#+
  # scale_y_continuous(labels = scales::percent)
-
-
-# ggsave(paste0(paste(query_gene,cutoff_pos,cutoff_neg,cutoff_reg,"random",reptimes,"rep",number_subset_genes,"genes",sep = "_"),".png"),
-#         width = 5,
-#        height = 4)#,dpi = 300)
-
-#ggplotly(p)
 
 saveRDS(p,paste0("output/random_",query_gene,".rds"))
