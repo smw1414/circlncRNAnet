@@ -1,5 +1,10 @@
 #!/usr/bin/env Rscript
 #####!/share/apps/R/bin/Rscript
+
+#######################
+# scatter plot module #
+#######################
+
 args=commandArgs(TRUE)
 library("getopt")
 
@@ -17,37 +22,27 @@ Example (linux): Rscript scatterplot.r -q chr19_21216990_21216261_fwd -c ENSG000
   q();
 }
 
-
-circ_gene_merged<-readRDS("output/circ_gene_merged.rds") #reads table
+#reads table
+circ_gene_merged<-readRDS("output/circ_gene_merged.rds") 
 #linc_coexp_pairs<-readRDS("output/linc_coexp_pairs.rds")
 df_opt<-readRDS("output/opt.rds")
 
-if ("symbol" %in% df_opt$V1  & "circ" %in% df_opt$V1 ){
-  xx<-opt$query[1]
-  #yy<-unique(linc_coexp_pairs[linc_coexp_pairs$co_exp_gene_id == opt$coexp[1] & linc_coexp_pairs$circRNA == unique(linc_coexp_pairs$circRNA)[1],]$co_exp_gene)
-  yy<-opt$coexp[1]
-} else if ("id" %in% df_opt$V1  & "circ" %in% df_opt$V1) {
-  xx<-opt$query[1]
-  yy<-opt$coexp[1]
-  
-} else if ("symbol" %in% df_opt$V1  & "lnc" %in% df_opt$V1) {
-  xx<-opt$query[1]
-  yy<-opt$coexp[1]
-} else if ("id" %in% df_opt$V1  & "lnc" %in% df_opt$V1) {
-  xx<-opt$query[1]
-  yy<-opt$coexp[1]
-}
+# assign X and y for scatter plot
+xx<-opt$query[1]
+yy<-opt$coexp[1]
 
 
 #lm_scatter = lm(log2(circ_gene_merged[,yy])~log2(circ_gene_merged[,xx]), data = circ_gene_merged)
 #sum_lm_scatter <- summary(lm_scatter )
 #r2_lm_scatter  = sum_lm_scatter $adj.r.squared
 #pvalue_lm_scatter  = sum_lm_scatter $coefficients[2,4]
+
+# calculation of correlation and pvalue
 label_r2_lm_scatter  <- paste("Pearson's r = ", format(as.numeric(cor(log2(circ_gene_merged[,yy]),log2(circ_gene_merged[,xx]))) , digits = 3))
 label_pvalue_lm_scatter  <- paste("p-value = ", format(cor.test(log2(circ_gene_merged[,yy]),log2(circ_gene_merged[,xx]))$p.value , digits = 3))
 
 
-
+# plot
 library("ggplot2")
 ggplot((circ_gene_merged), aes(x= log2(circ_gene_merged[,xx]), y= log2(circ_gene_merged[,yy]) )) + 
   geom_point(aes(color=factor(attr)),size = 2,alpha=0.5)+
