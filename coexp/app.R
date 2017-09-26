@@ -95,7 +95,7 @@ ui <- shinyUI(fluidPage(useShinyjs(),
                                            id = "loading-rand",
                                            img(src = "../../../images/loading-1.gif")
                                          )),
-                                          strong("Obs: Observation, Rand: Randomization"),
+                                          strong("Obs: Observation, Rand: Randomization (500 iterations)"),
                                          plotlyOutput('randomization')#, height = "300px")
                                        ))
                               
