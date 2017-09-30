@@ -1,4 +1,10 @@
 #!/usr/bin/env Rscript
+
+###########################################################################
+# lncRNA-RBP triple network                                               #
+# identify the lncRNA/co-expressed genes RBP binding and plot the network #
+###########################################################################
+
 args=commandArgs(TRUE)
 library("getopt")
 
@@ -42,15 +48,7 @@ cutoff_reg<-opt$cutoff_reg[1]
 DSD<-opt$display_supported_data[1]
 acq<-opt$RBP[1] # asscociated component query
 
-asas<-function(){
-  query_gene<<-"AC021218.2"
-  query_symbol_input<<-"AC021218.2"
-  cutoff_pos<<-0.5
-  cutoff_neg<<--0.5
-  cutoff_reg<<-"in"
-  acq<-"PTBP1"
-}
-
+# assign column name
 qry<-"query"
 ac_col<-"RBP"
 ac<-"RBP"
@@ -154,7 +152,7 @@ run_rbp<-as.data.table(data.frame(lapply(run_rbp, as.character), stringsAsFactor
 ####
 run_time_message(paste0("lncRNA RBP dependent lncRNA/co-expressed gene-associated compment link count: ",nrow(run_rbp)))
 
-#output error if no RBP site found 
+# output error if no RBP site found 
 if(length(run_rbp[run_rbp$query_symbol %in% query_symbol_input, ]$RBP)==0) {
   write_error_triple_tabnode0_fun("RBP",query_symbol_input,"RBP binding site not found")
   q("RBP binding site not found")
@@ -209,7 +207,7 @@ run_time_message(paste0("query and co-expressed gene: ",length(unique(run_rbp_ne
 run_time_message(paste0("lncRNA RBP dependent lncRNA/co-expressed gene-associated compment link count with 2 or more supported data: ",nrow(run_rbp_network)))
 
 
-#output error if no RBP site found  with DSD setting
+# output error if no RBP site found  with DSD setting
 if(length( unique(run_rbp_network[ run_rbp_network$query_symbol %in% query_symbol_input, ]$RBP))==0){
   #system('echo RBP binding site not found, after DSD filter > output/RBP_netowrk_error.txt' )
   write_error_triple_tabnode0_fun("RBP",query_symbol_input,"No RBP binding site found after supported source filter")

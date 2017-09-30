@@ -1,4 +1,10 @@
 #!/usr/bin/env Rscript
+
+###################################################################################
+# lnccRNA-miRNA triple network                                                    #
+# identify the lncRNA/co-expressed genes miRNA binding sites and plot the network #
+###################################################################################
+
 args=commandArgs(TRUE)
 library("getopt")
 
@@ -21,6 +27,7 @@ if ( is.null(opt$query  )) {
 }
 
 source("universal_function.R")
+
 
 gencode_files<-list(gencodev19=c("v19_gene_coordinate.rds",
                                  "all_v19_sponge.feather"),
@@ -126,6 +133,7 @@ run_time_message(paste0("number of coexpressed gene: ",
 #   q("Please lower the cutoff for co-expression network")
 #   }
 
+# load miRNA target site files
 run_time_message("loading spong db")
 gene_coordinate<-readRDS(gencode_files[[df_opt["annotation","V1"]]][1])
 sponge<-read_feather_dt(gencode_files[[df_opt["annotation","V1"]]][2])
