@@ -1,4 +1,10 @@
 #!/usr/bin/env Rscript
+
+####################################################################################
+# circRNA-miRNA triple network                                                     #
+# identify the circRNA/co-expressed genes miRNA binding sites and plot the network #
+####################################################################################
+
 args=commandArgs(TRUE)
 library("getopt")
 
@@ -45,7 +51,7 @@ cutoff_reg <- opt$cutoff_reg[1]
 DSD <- opt$display_supported_data[1]
 acq <- opt$miRNA[1] # asscociated component query
 
-
+# assign column name
 qry<-"query"
 ac<-"miRNA"
 ac_col<-"miRNA"
@@ -131,11 +137,13 @@ run_time_message(paste0("number of coexpressed gene: ",nrow(linc_coexp_pairs_fil
 #   q("Please lower the cutoff for co-expression network")
 # }
 
+# loading miRNA targeting sites files
 run_time_message("loading spong db")
 gene_coordinate<-readRDS(gencode_files[[df_opt["annotation","V1"]]][1])
 sponge_co<-read_feather_dt(gencode_files[[df_opt["annotation","V1"]]][2])
 sponge_q<-read_feather_dt(gencode_files[[df_opt["annotation","V1"]]][3])
 
+# filter themiRNA targeting sites files by query genes
 run_time_message("filter co-expressed gene miRNA targetting site")
 sponge_q<-unique(sponge_q[sponge_q$query_id %in%  query_id_input ])
 sponge_co<-sponge_co[sponge_co$miRNA %in% sponge_q[sponge_q$query_id %in%  query_id_input, ]$miRNA,]

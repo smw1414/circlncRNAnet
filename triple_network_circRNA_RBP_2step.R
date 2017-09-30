@@ -1,4 +1,10 @@
 #!/usr/bin/env Rscript
+
+############################################################################
+# circRNA-RBP triple network                                               #
+# identify the circRNA/co-expressed genes RBP binding and plot the network #
+############################################################################
+
 args=commandArgs(TRUE)
 library("getopt")
 
@@ -56,7 +62,7 @@ cutoff_reg<-opt$cutoff_reg[1]
 DSD<-opt$display_supported_data[1]
 acq<-opt$RBP[1] # asscociated component query
 
-
+# assign column name
 qry<-"query"
 ac_col<-"RBP"
 ac<-"RBP"
@@ -139,6 +145,7 @@ run_time_message(paste0("number of coexpressed gene: ",nrow(linc_coexp_pairs_fil
 
 #merge_com_exp_rbp_queries_circ<-function(encode,encode_circ,fimo,fimo_circ,pipseq,pipseq_circ){
 
+# loading ENCODE FIMO and PIPseq data
 gene_coordinate<-readRDS(gencode_files[[df_opt["annotation","V1"]]][1])
 run_time_message(paste0("loading PIP-seq data "))
 pipseq<-unique(rbind(fread(gencode_files[[df_opt["annotation","V1"]]][6]),fread(gencode_files[[df_opt["annotation","V1"]]][7])))
@@ -151,18 +158,29 @@ com_lncRNA_RBP<-com_lncRNA_RBP[query_symbol %in% c(query_id_input,linc_coexp_pai
 exp_lncRNA_RBP<-exp_lncRNA_RBP[query_symbol %in% c(query_id_input,linc_coexp_pairs_filtered$co_exp_gene) ]
 pipseq<-pipseq[query_symbol %in% c(query_id_input,linc_coexp_pairs_filtered$co_exp_gene)]
 
+# formated data, ready for filter
 run_rbp<-unique(rbind(com_lncRNA_RBP[ ,1:4,with=F],exp_lncRNA_RBP[ ,1:4,with=F]))
-
-notin<-unique( c(which(pipseq$query_id %in% setdiff(unique(pipseq$query_id),unique(run_rbp$query_id ))), #extract RBP only in PIPSEQ
+ 
+# extract RBP only in PIPSEQ
+notin<-unique( c(which(pipseq$query_id %in% setdiff(unique(pipseq$query_id),unique(run_rbp$query_id ))),
                  which(pipseq$query_symbol %in% setdiff(unique(pipseq$query_symbol),unique(run_rbp$query_symbol )) )))
 pipseq2<-pipseq[ notin,]
 pipseq2$pvalue<-""
 pipseq2<-pipseq2[,c(1,2,3,4,5,7,6),with=F]
+
+# combine with pipseq data
 run_rbp<-rbind(run_rbp,pipseq2[,1:4,with=F])
+
+# filter the table with query and co-expressed gene
 run_rbp<-run_rbp[query_symbol %in% unique(c(query_id_input,linc_coexp_pairs_filtered$co_exp_gene)),1:4,with=F]
-run_rbp<-run_rbp[run_rbp$RBP %in% run_rbp[run_rbp$query_symbol %in% query_id_input, ]$RBP,]  # filter query circRNA  associated components
-run_rbp<-data.table(data.frame(lapply(run_rbp, as.character), stringsAsFactors=FALSE)) # conver all coulmn to factor
-####sdfasdfasd
+
+# filter query circRNA  associated components
+run_rbp<-run_rbp[run_rbp$RBP %in% run_rbp[run_rbp$query_symbol %in% query_id_input, ]$RBP,]  
+
+# conver all coulmn to factor
+run_rbp<-data.table(data.frame(lapply(run_rbp, as.character), stringsAsFactors=FALSE))
+
+
 run_time_message(paste0("circRNA RBP dependent lncRNA/co-expressed gene-associated compment link count: ",nrow(run_rbp)))
 #output error if no RBP site found 
 if(length(run_rbp[run_rbp$query_symbol %in% query_id_input, ]$RBP)==0) {
