@@ -4,7 +4,7 @@ This instruction will guide the users to use the circlncRNAnet in local mode. To
 
 1. Linux environment.   
 2. R, v3.3.2 is recommended.  
-3. Rstudio.  
+3. RStudio.  
  
 Then, follow the instructions below for installation and data analyses:
   
