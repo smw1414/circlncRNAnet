@@ -35,8 +35,10 @@ q("no")
 ### **2. Download the db files**  
 
 ```
-wget http://app.cgu.edu.tw/circlnc/db/db.zip  # 1GB
+wget http://app.cgu.edu.tw/circlnc/db/db.zip # 1GB
+# or https://drive.google.com/file/d/1GZTwYKFbeyejiuGdzmt48hMxkDCeucX6/view?usp=sharing
 wget http://app.cgu.edu.tw/circlnc/tcga/tcga.zip # 1.6GB
+# or https://drive.google.com/file/d/17fEiOTrJb1L-9LrQG8pDxel5rh_Ep-ce/view?usp=sharing
 unzip db.zip  
 unzip tcga.zip  
 ```
